@@ -2,18 +2,20 @@
 
 ls ../Data/Sam * | grep _aligned.sam$ > temp.txt
 
-mkdir ../Data/SortedBam
-mkdir ../Data/Dedup
-mkdir ../Data/Metrics
+#mkdir ./SortedBam
+#mkdir ./Data/Dedup
+#mkdir ./Data/Metrics
 
 while read sam; do
-	input=$sam
-	name=${sam%*_aligned.sam}
-	
+	temp=${sam%*_aligned.sam}
+	name=${temp#../Data/*}
+
 	#Create a sorted bam
 	sortedBam=../Data/SortedBam/${name}_sorted.bam
+	inputSam=../Data/Sam/${name}_aligned.sam
+	echo $inputSam
 	java -jar /bin/picard-tools-1.133/picard.jar SortSam \
-		INPUT=$input \
+		INPUT=$inputSam \
 		OUTPUT=$sortedBam \
 		SORT_ORDER=coordinate
 	
