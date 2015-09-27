@@ -12,7 +12,7 @@ while read realigned; do
         java -jar ./GenomeAnalysisTK.jar -nct 24 \
                 -T BaseRecalibrator \
                 -R ../Data/human_g1k_v37.fasta \
-                -I ../Data/Dedup/${realigned} \
+                -I ../Data/RealignedBams/${realigned} \
                 -knownSites ../Data/Indels.vcf \
 		-knownSites ../Data/dbsnp_138.b37.vcf \
                 -o ../Data/RecalTables/${name}_recal.table
@@ -20,24 +20,24 @@ while read realigned; do
         java -jar ./GenomeAnalysisTK.jar -nct 24 \
                 -T BaseRecalibrator \
                 -R ../Data/human_g1k_v37.fasta \
-                -I ../Data/Dedup/${realigned} \
+                -I ../Data/RealignedBams/${realigned} \
                 -knownSites ../Data/Indels.vcf \
 		-knownSites ../Data/dbsnp_138.b37.vcf \
-		-BQSR ../Data/RecalTables/${name}_recal.table               
+		-BQSR ../Data/RecalTables/${name}_recal.table  \
 		-o ../Data/PostRecalTables/${name}_postrecal.table
 	
 	java -jar ./GenomeAnalysisTK.jar \
                 -T AnalyzeCovariates \
                 -R ../Data/human_g1k_v37.fasta \
-		-before ../Data/RecalTables/${name}_recal.table               
-		-after ../Data/PostRecalTables/${name}_postrecal.table
-		-plots ../Data/RecalPlots/${name}_recal_plot.pdf
+		-before ../Data/RecalTables/${name}_recal.table \
+		-after ../Data/PostRecalTables/${name}_postrecal.table \
+		-plots ../Data/RecalPlots/${name}_recal_plot.pdf \
 	
 	java -jar ./GenomeAnalysisTK.jar -nct 24 \
                 -T PrintReads \
-		-R ../Data/human_g1k_v37.fasta \                
-		-I ../Data/Dedup/${realigned} \
-		-BQSR ../Data/RecalTables/${name}_recal.table           
+		-R ../Data/human_g1k_v37.fasta \
+		-I ../Data/RealignedBams/${realigned} \
+		-BQSR ../Data/RecalTables/${name}_recal.table \
 		-o ../Data/RecalBams/${name}_recal.bam
 
 done< temp.txt
