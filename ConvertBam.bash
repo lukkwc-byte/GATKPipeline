@@ -2,9 +2,9 @@
 
 ls ../Data/Sam * | grep _aligned.sam$ > temp.txt
 
-#mkdir ./SortedBam
-#mkdir ./Data/Dedup
-#mkdir ./Data/Metrics
+mkdir ../Data/SortedBam
+mkdir ../Data/Dedup
+mkdir ../Data/Metrics
 
 while read sam; do
 	temp=${sam%*_aligned.sam}
@@ -27,9 +27,5 @@ while read sam; do
 		OUTPUT=$dedupBam \
 		METRICS_FILE=$metrics
 	
-	#Index Bam File
-	java -jar /bin/picard-tools-1.133/picard.jar BuildBamIndex \
-		INPUT=$dedupBam
-
 done < temp.txt	
 rm temp.txt 

@@ -13,16 +13,18 @@ while read realigned; do
                 -T BaseRecalibrator \
                 -R ../Data/human_g1k_v37.fasta \
                 -I ../Data/RealignedBams/${realigned} \
-                -knownSites ../Data/Indels.vcf \
+                -knownSites ../Data/Mills_and_1000G_gold_standard.indels.b37.vcf \
 		-knownSites ../Data/dbsnp_138.b37.vcf \
-                -o ../Data/RecalTables/${name}_recal.table
+                -knownSites ../Data/1000G_phase1.indels.b37.vcf \
+		-o ../Data/RecalTables/${name}_recal.table
 
         java -jar ./GenomeAnalysisTK.jar -nct 24 \
                 -T BaseRecalibrator \
                 -R ../Data/human_g1k_v37.fasta \
                 -I ../Data/RealignedBams/${realigned} \
-                -knownSites ../Data/Indels.vcf \
+                -knownSites ../Data/Mills_and_1000G_gold_standard.indels.b37.vcf \
 		-knownSites ../Data/dbsnp_138.b37.vcf \
+		-knownSites ../Data/1000G_phase1.indels.b37.vcf \
 		-BQSR ../Data/RecalTables/${name}_recal.table  \
 		-o ../Data/PostRecalTables/${name}_postrecal.table
 	
@@ -41,6 +43,5 @@ while read realigned; do
 		-o ../Data/RecalBams/${name}_recal.bam
 
 done< temp.txt
-
 rm temp.txt
 
